@@ -1,5 +1,5 @@
-const { tours } = require("../models/toursModel");
-const fs = require("fs");
+const fs = require('fs');
+const { tours } = require('../models/toursModel');
 
 exports.getAllTours = (req, res) => {
   res.status(200).json({
@@ -12,14 +12,14 @@ exports.getAllTours = (req, res) => {
 };
 
 exports.getTour = (req, res) => {
-  const tour = tours.find((el) => el.id === (req.params.id * 1));
+  const tour = tours.find((el) => el.id === req.params.id * 1);
   res.status(200).json({
     status: 200,
     requestedAt: req.requestTime,
     message: 'Successfully retrived tour',
     data: tour,
   });
-}
+};
 
 exports.createdTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
@@ -29,31 +29,31 @@ exports.createdTour = (req, res) => {
   fs.writeFile(
     `${__dirname}/data/tours-simple.json`,
     JSON.stringify(tours),
-    (err) => {
+    () => {
       res.status(201).json({
         status: 201,
         requestedAt: req.requestTime,
         message: 'Successfully created new tour',
         data: newTour,
       });
-    }
+    },
   );
-}
+};
 
 exports.updatedTour = (req, res) => {
   res.status(200).json({
     status: 200,
     requestedAt: req.requestTime,
     message: 'Successfully updated tour',
-    data: "Updated tour",
+    data: 'Updated tour',
   });
-}
+};
 
 exports.deletedTour = (req, res) => {
   res.status(200).json({
     status: 204,
     requestedAt: req.requestTime,
     message: 'Successfully deleted tour',
-    data: "deleted tour",
+    data: 'deleted tour',
   });
-}
+};

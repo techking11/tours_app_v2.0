@@ -6,6 +6,5 @@ exports.checkId = (req, res, next, val) => {
       status: 404,
       message: 'Unfortunately: tour not found',
     });
-    
   next();
 };

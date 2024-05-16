@@ -1,8 +1,10 @@
 const express = require('express');
+
 const tourRouter = express.Router();
 
 const { checkId } = require('../../services/service');
 const { checkBody } = require('../../middleware/chain');
+
 tourRouter.param('id', checkId);
 
 const {
