@@ -2,11 +2,6 @@ const express = require('express');
 
 const tourRouter = express.Router();
 
-const { checkId } = require('../../services/service');
-const { checkBody } = require('../../middleware/chain');
-
-tourRouter.param('id', checkId);
-
 const {
   getAllTours,
   getTour,
@@ -15,7 +10,7 @@ const {
   deletedTour,
 } = require('../../controllers/toursController');
 
-tourRouter.route('/').get(getAllTours).post(checkBody, createdTour);
+tourRouter.route('/').get(getAllTours).post(createdTour);
 tourRouter.route('/:id').get(getTour).patch(updatedTour).delete(deletedTour);
 
 module.exports = tourRouter;

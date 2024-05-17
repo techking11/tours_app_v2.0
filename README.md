@@ -1,4 +1,4 @@
-Natours Application
+Natours Application - Version 2.0
 ================================================================
 
 It could be created with tools: MongoDB, Mongoose, Node, and Express.
