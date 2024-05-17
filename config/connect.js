@@ -11,4 +11,5 @@ const dbConnection = () => {
     })
     .then(() => console.log('DB connection successful'));
 };
+
 module.exports = dbConnection;

@@ -3,7 +3,25 @@ const { responseError, responseSuccess } = require('../services/utils');
 
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    const queryObj = { ...req.query };
+    const extendedFields = ['limit', 'sort', 'page', 'fields', 'offset'];
+    extendedFields.forEach((el) => delete queryObj[el]);
+
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+
+    let query = Tour.find(JSON.parse(queryStr));
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join(' ');
+      query = query.sort(sortBy);
+    } else query = query.sort('-createdAt');
+
+    if (req.query.fields) {
+      const fieldsBy = req.query.fields.split(',').join(' ');
+      query = query.select(fieldsBy);
+    } else query = query.select('-__v');
+    const tours = await query;
+
     res.status(200).json({
       status: 'success',
       total: tours.length,
