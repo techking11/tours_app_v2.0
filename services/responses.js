@@ -1,4 +1,4 @@
-exports.responseError = (res, code, err = 'Tour not found !') => {
+exports.responseError = (res, code, err) => {
   res.status(code).json({
     status: 'fail',
     message: err,
