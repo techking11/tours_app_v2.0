@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
+const { info } = require('console');
+const Validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -8,6 +10,9 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'A tour must have a name'],
       unique: true,
       trim: true,
+      minLength: [10, 'The tour name must be more than 10 characters'],
+      maxLength: [50, 'The tour name must be less than 50 characters'],
+      validate: [Validator.isAlpha, 'The tour name only contains characters.'],
     },
     slug: String,
     duration: {
@@ -21,10 +26,16 @@ const tourSchema = new mongoose.Schema(
     difficulty: {
       type: String,
       required: [true, 'A tour must have a difficulty'],
+      enum: {
+        values: ['easy', 'medium', 'diffcult'],
+        message: 'A difficulty must be either : easy, medium or diffcult',
+      },
     },
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      min: [1, 'The ratingsAverage is greater or equal than 1'],
+      max: [5, 'The ratingsAverage is less or equal than 5'],
     },
     ratingsQuantity: {
       type: Number,
@@ -33,6 +44,13 @@ const tourSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: [true, 'A tour must have a price'],
+    },
+    pricesDiscount: {
+      type: Number,
+      validate: function (val) {
+        return val < this.price;
+      },
+      message: 'A price discount ({VALUE}) should be below reqular price',
     },
     summary: {
       type: String,
@@ -55,6 +73,10 @@ const tourSchema = new mongoose.Schema(
       select: false,
     },
     startDates: [Date],
+    secretTour: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: { virtuals: true },
@@ -70,6 +92,25 @@ tourSchema.virtual('durationWeeks').get(function () {
 // DOCUMENT MIDDLEWARE: save(), create()
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+// QUERY MIDDLEWARE
+tourSchema.pre(/^find/, function (next) {
+  this.find({ secretTour: { $ne: true } });
+  this.start = Date.now();
+  next();
+});
+
+tourSchema.post(/^find/, function (docs, next) {
+  info(`Tour query took ${Date.now() - this.start} milliseconds`);
+  next();
+});
+
+// AGGREGATE MIDDLEWARE
+tourSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
+  info(this.pipeline());
   next();
 });
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { info } = require('console');
 require('dotenv').config();
 
 const DB = process.env.DATABASE_URI;
@@ -9,7 +10,7 @@ const dbConnection = () => {
       useCreateIndex: true,
       useFindAndModify: false,
     })
-    .then(() => console.log('DB connection successful'));
+    .then(() => info('DB connection successful'));
 };
 
 module.exports = dbConnection;

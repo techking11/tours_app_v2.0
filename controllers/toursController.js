@@ -29,9 +29,9 @@ exports.getTourStats = async (req, res) => {
         },
       },
       { $sort: { price: 1 } },
-      { $match: { difficulty: { $ne: 'easy' } } },
     ]);
-    responseSuccessTotal(res, 200, tourStats);
+    if (tourStats.length > 0) responseSuccessTotal(res, 200, tourStats);
+    else responseError(res, 404, 'Tour status not found');
   } catch (err) {
     responseError(err, 404, err.message);
   }
@@ -62,7 +62,7 @@ exports.getMonthlyPlan = async (req, res) => {
       { $sort: { numTourStats: -1 } },
       { $limit: 10 },
     ]);
-    if (monthlyPlan.length !== 0) responseSuccessTotal(res, 200, monthlyPlan);
+    if (monthlyPlan.length > 0) responseSuccessTotal(res, 200, monthlyPlan);
     else responseError(res, 404, 'Invalid year !');
   } catch (err) {
     responseError(err, 404, err.message);
