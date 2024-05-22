@@ -9,9 +9,11 @@ const {
   updatedUser,
   deletedUser,
 } = require('../../controllers/usersController');
-const { userSignUp } = require('../../controllers/authController');
+const { userSignUp, userLogin } = require('../../controllers/authController');
 
 userRouter.route('/signup').post(userSignUp);
+userRouter.route('/login').post(userLogin);
+
 userRouter.route('/').get(getAllUsers).post(createdUser);
 userRouter.route('/:id').get(getUser).patch(updatedUser).delete(deletedUser);
 

@@ -1,10 +1,10 @@
 const Tour = require('../models/tourModel');
 const {
-  responseError,
   responseSuccess,
   responseSuccessTotal,
 } = require('../services/responses');
 const APIFeatures = require('../utils/apiFeatures');
+const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.topAliasTours = (req, res, next) => {
@@ -31,7 +31,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     { $sort: { price: 1 } },
   ]);
   if (tourStats.length > 0) responseSuccessTotal(res, 200, tourStats);
-  else responseError(res, 404, 'Tour status not found');
+  else next(new AppError('Tour status not found', 404));
 });
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
@@ -59,7 +59,7 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     { $limit: 10 },
   ]);
   if (monthlyPlan.length > 0) responseSuccessTotal(res, 200, monthlyPlan);
-  else responseError(res, 404, 'Invalid year !');
+  else next(new AppError(`Invalid year: ${req.params.year}`, 404));
 });
 
 exports.getAllTours = catchAsync(async (req, res, next) => {
@@ -75,7 +75,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
   if (tour) responseSuccess(res, 200, tour);
-  else responseError(res, 404, 'Tour not found !');
+  else next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
 });
 
 exports.createdTour = catchAsync(async (req, res, next) => {
@@ -89,11 +89,11 @@ exports.updatedTour = catchAsync(async (req, res, next) => {
     runValidators: true,
   });
   if (updatedTour) responseSuccess(res, 200, updatedTour);
-  else responseError(res, 404, 'Tour not found !');
+  else next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
 });
 
 exports.deletedTour = catchAsync(async (req, res, next) => {
   const deletedTour = await Tour.findByIdAndDelete(req.params.id);
   if (deletedTour) responseSuccess(res, 200, deletedTour);
-  else responseError(res, 404, 'Tour not found !');
+  else next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
 });

@@ -1,10 +1,3 @@
-exports.responseError = (res, code, err) => {
-  res.status(code).json({
-    status: 'fail',
-    message: err,
-  });
-};
-
 exports.responseSuccess = (res, code, data) => {
   res.status(code).json({
     status: 'success',
