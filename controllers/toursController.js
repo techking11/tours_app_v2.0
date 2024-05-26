@@ -1,10 +1,7 @@
 const Tour = require('../models/tourModel');
-const {
-  responseSuccess,
-  responseSuccessTotal,
-} = require('../services/responses');
 const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
+const AppSuccess = require('../utils/appSuccess');
 const catchAsync = require('../utils/catchAsync');
 
 exports.topAliasTours = (req, res, next) => {
@@ -30,8 +27,10 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
     },
     { $sort: { price: 1 } },
   ]);
-  if (tourStats.length > 0) responseSuccessTotal(res, 200, tourStats);
-  else next(new AppError('Tour status not found', 404));
+  if (tourStats.length > 0)
+    return new AppSuccess(200, tourStats, tourStats.length).select(res);
+
+  next(new AppError('Tour status not found', 404));
 });
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
@@ -58,8 +57,10 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     { $sort: { numTourStats: -1 } },
     { $limit: 10 },
   ]);
-  if (monthlyPlan.length > 0) responseSuccessTotal(res, 200, monthlyPlan);
-  else next(new AppError(`Invalid year: ${req.params.year}`, 404));
+  if (monthlyPlan.length > 0)
+    return new AppSuccess(200, monthlyPlan, monthlyPlan.length).select(res);
+
+  next(new AppError(`Invalid year: ${req.params.year}`, 404));
 });
 
 exports.getAllTours = catchAsync(async (req, res, next) => {
@@ -69,18 +70,21 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
     .limiting()
     .paginating();
   const tours = await features.query;
-  responseSuccessTotal(res, 200, tours);
+  if (tours.length > 0)
+    return new AppSuccess(200, tours, tours.length).select(res);
+
+  next(new AppError('Tours not found', 400));
 });
 
 exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
-  if (tour) responseSuccess(res, 200, tour);
-  else next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
+  if (tour) return new AppSuccess(200, tour).select(res);
+  next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
 });
 
 exports.createdTour = catchAsync(async (req, res, next) => {
   const newTour = await Tour.create(req.body);
-  responseSuccess(res, 201, newTour);
+  return new AppSuccess(201, newTour).select(res);
 });
 
 exports.updatedTour = catchAsync(async (req, res, next) => {
@@ -88,12 +92,12 @@ exports.updatedTour = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-  if (updatedTour) responseSuccess(res, 200, updatedTour);
-  else next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
+  if (updatedTour) return new AppSuccess(res, 200, updatedTour).select(res);
+  next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
 });
 
 exports.deletedTour = catchAsync(async (req, res, next) => {
   const deletedTour = await Tour.findByIdAndDelete(req.params.id);
-  if (deletedTour) responseSuccess(res, 200, deletedTour);
-  else next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
+  if (deletedTour) return new AppSuccess(200, deletedTour).select(res);
+  next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
 });

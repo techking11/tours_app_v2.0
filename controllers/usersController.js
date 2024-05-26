@@ -1,10 +1,10 @@
 const User = require('../models/userModel');
-const { responseSuccessTotal } = require('../services/responses');
+const AppSuccess = require('../utils/appSuccess');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const user = await User.find();
-  responseSuccessTotal(res, 200, user);
+  return new AppSuccess(200, user, user.length).select(res);
 });
 
 exports.getUser = (req, res) => {
