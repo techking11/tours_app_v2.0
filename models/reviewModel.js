@@ -1,26 +1,36 @@
 const mongoose = require('mongoose');
 
-const reviewSchema = new mongoose.Schema({
-  review: {
-    type: String,
-    required: [true, 'Review is required !'],
+const reviewSchema = new mongoose.Schema(
+  {
+    review: {
+      type: String,
+      required: [true, 'Review cannot be empty !'],
+    },
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      required: [true, 'Review must belong to a user.'],
+    },
+    tour: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Tour',
+      required: [true, 'Review must blong to a user.'],
+    },
   },
-  rating: {
-    type: Number,
-    min: 1,
-    max: 5,
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'User',
-    select: 'name',
-  },
-  tour: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Tour',
-    select: 'name photo',
-  },
-});
+);
 
 const Review = mongoose.model('Review', reviewSchema);
 
