@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 const { info } = require('console');
-const Validator = require('validator');
+// const Validator = require('validator');
 
 const tourSchema = new mongoose.Schema(
   {
@@ -12,7 +12,12 @@ const tourSchema = new mongoose.Schema(
       trim: true,
       minLength: [10, 'The tour name must be more than 10 characters'],
       maxLength: [50, 'The tour name must be less than 50 characters'],
-      validate: [Validator.isAlpha, 'The tour name only contains characters.'],
+      validate: {
+        validator: function (v) {
+          return /^[A-Za-z\s]+$/.test(v);
+        },
+        message: 'The tour name only contains characters.',
+      },
     },
     slug: String,
     duration: {
@@ -27,8 +32,8 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A tour must have a difficulty'],
       enum: {
-        values: ['easy', 'medium', 'diffcult'],
-        message: 'A difficulty must be either : easy, medium or diffcult',
+        values: ['easy', 'medium', 'difficult'],
+        message: 'A difficulty must be either : easy, medium or difficult',
       },
     },
     ratingsAverage: {
@@ -77,6 +82,34 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: ['Number'],
+      description: String,
+      address: String,
+    },
+    locations: [
+      {
+        type: {
+          type: String,
+          default: 'Point',
+          enum: ['Point'],
+        },
+        coordinates: ['Number'],
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
@@ -99,6 +132,14 @@ tourSchema.pre('save', function (next) {
 tourSchema.pre(/^find/, function (next) {
   this.find({ secretTour: { $ne: true } });
   this.start = Date.now();
+  next();
+});
+
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
   next();
 });
 
