@@ -7,6 +7,12 @@ const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Please tell us your name'],
+    validate: {
+      validator: function (v) {
+        return /^[A-Za-z\s]+$/.test(v);
+      },
+      message: 'The user name only contains letters or space.',
+    },
   },
   email: {
     type: String,
@@ -26,6 +32,10 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please enter your password'],
     minLength: 8,
     select: false,
+    validate: [
+      validator.isStrongPassword,
+      'Password must be at least 8 characters with at least 1 lowercase, 1 uppercase, 1 number, and 1 symbol.',
+    ],
   },
   passwordConfirm: {
     type: String,
