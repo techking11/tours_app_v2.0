@@ -1,7 +1,7 @@
 const User = require('../models/userModel');
-const AppSuccess = require('../utils/appSuccess');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
+const { deleteOne, updateOne, getOne, getAll } = require('./handleFactory');
 
 const filteredObj = function (obj, ...allowedFields) {
   const newObj = {};
@@ -42,35 +42,14 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const user = await User.find();
-  return new AppSuccess(200, user, user.length).select(res);
-});
-
-exports.getUser = (req, res) => {
-  res.status(500).json({
-    status: 500,
-    message: 'Users route not found',
-  });
-};
-
 exports.createdUser = (req, res) => {
   res.status(500).json({
     status: 500,
-    message: 'Users route not found',
+    message: 'Users route not found ! Please use /signup !',
   });
 };
-
-exports.updatedUser = (req, res) => {
-  res.status(500).json({
-    status: 500,
-    message: 'Users route not found',
-  });
-};
-
-exports.deletedUser = (req, res) => {
-  res.status(500).json({
-    status: 500,
-    message: 'Users route not found',
-  });
-};
+exports.getAllUsers = getAll(User);
+exports.getUser = getOne(User);
+// Don't user this for password change
+exports.updatedUser = updateOne(User);
+exports.deletedUser = deleteOne(User);

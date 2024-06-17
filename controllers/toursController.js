@@ -1,8 +1,15 @@
 const Tour = require('../models/tourModel');
-const APIFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 const AppSuccess = require('../utils/appSuccess');
 const catchAsync = require('../utils/catchAsync');
+
+const {
+  updateOne,
+  createOne,
+  deleteOne,
+  getOne,
+  getAll,
+} = require('./handleFactory');
 
 exports.topAliasTours = (req, res, next) => {
   req.query.limit = '5';
@@ -63,41 +70,8 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
   next(new AppError(`Invalid year: ${req.params.year}`, 404));
 });
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filtering()
-    .sorting()
-    .limiting()
-    .paginating();
-  const tours = await features.query;
-  if (tours.length > 0)
-    return new AppSuccess(200, tours, tours.length).select(res);
-
-  next(new AppError('Tours not found', 400));
-});
-
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-  if (tour) return new AppSuccess(200, tour).select(res);
-  next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
-});
-
-exports.createdTour = catchAsync(async (req, res, next) => {
-  const newTour = await Tour.create(req.body);
-  return new AppSuccess(201, newTour).select(res);
-});
-
-exports.updatedTour = catchAsync(async (req, res, next) => {
-  const updatedTour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  if (updatedTour) return new AppSuccess(res, 200, updatedTour).select(res);
-  next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
-});
-
-exports.deletedTour = catchAsync(async (req, res, next) => {
-  const deletedTour = await Tour.findByIdAndDelete(req.params.id);
-  if (deletedTour) return new AppSuccess(200, deletedTour).select(res);
-  next(new AppError(`Tour invalid _id: ${req.params.id}`, 404));
-});
+exports.getAllTours = getAll(Tour);
+exports.getTour = getOne(Tour, { path: 'reviews' });
+exports.createdTour = createOne(Tour);
+exports.updatedTour = updateOne(Tour);
+exports.deletedTour = deleteOne(Tour);
