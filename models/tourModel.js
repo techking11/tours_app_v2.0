@@ -10,13 +10,13 @@ const tourSchema = new mongoose.Schema(
       required: [true, 'A tour must have a name'],
       unique: true,
       trim: true,
-      minLength: [10, 'The tour name must be more than 10 characters'],
-      maxLength: [50, 'The tour name must be less than 50 characters'],
+      minLength: [10, 'The tour name must be more than 10 letters'],
+      maxLength: [50, 'The tour name must be less than 50 letters'],
       validate: {
         validator: function (v) {
           return /^[A-Za-z\s]+$/.test(v);
         },
-        message: 'The tour name only contains characters.',
+        message: 'The tour name only contains letters and space.',
       },
     },
     slug: String,
@@ -120,6 +120,12 @@ const tourSchema = new mongoose.Schema(
 // VIRTUAL PROPERTIES
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
+});
+
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
 });
 
 // DOCUMENT MIDDLEWARE: save(), create()
