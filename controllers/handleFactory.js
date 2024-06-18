@@ -18,8 +18,7 @@ exports.getAll = (Model) =>
         total: docs.length,
         data: docs,
       });
-
-    next(new AppError('No documents found !', 400));
+    else next(new AppError('No documents found !', 400));
   });
 
 exports.getOne = (Model, popOptions) =>
@@ -55,7 +54,7 @@ exports.updateOne = (Model) =>
         status: 'success',
         data: doc,
       });
-    next(new AppError(`No document found _id: ${req.params.id} !`, 404));
+    else next(new AppError(`No document found _id: ${req.params.id} !`, 404));
   });
 
 exports.deleteOne = (Model) =>
@@ -66,5 +65,5 @@ exports.deleteOne = (Model) =>
         status: 'success',
         data: doc,
       });
-    next(new AppError(`No document found _id: ${req.params.id} !`, 404));
+    else next(new AppError(`No document found _id: ${req.params.id} !`, 404));
   });
