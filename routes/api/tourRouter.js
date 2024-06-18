@@ -13,6 +13,7 @@ const {
   getTourStats,
   getMonthlyPlan,
   getToursWithin,
+  getDistances,
 } = require('../../controllers/toursController');
 
 const { protector, restrictTo } = require('../../controllers/authController');
@@ -26,6 +27,10 @@ tourRouter.route('/top-5-cheap').get(topAliasTours, getAllTours);
 tourRouter
   .route('/tours-within/:distance/center/:latlng/unit/:unit')
   .get(protector, getToursWithin);
+
+// /distances/:latlng/unit/:unit
+// /distances/81.768,-67.232/unit/:mi
+tourRouter.route('/distances/:latlng/unit/:unit').get(protector, getDistances);
 
 tourRouter
   .route('/')
