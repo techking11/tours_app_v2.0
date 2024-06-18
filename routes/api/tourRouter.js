@@ -17,16 +17,17 @@ const {
 const { protector, restrictTo } = require('../../controllers/authController');
 
 tourRouter.use('/:tourId/reviews', reviewRouter);
-
-tourRouter.route('/monthly-plan/:year').get(getMonthlyPlan);
 tourRouter.route('/tour-stats').get(getTourStats);
 tourRouter.route('/top-5-cheap').get(topAliasTours, getAllTours);
 tourRouter.route('/').get(getAllTours).post(createdTour);
+tourRouter
+  .route('/monthly-plan/:year')
+  .get(protector, restrictTo('user'), getMonthlyPlan);
 
 tourRouter
   .route('/:id')
   .get(getTour)
-  .patch(updatedTour)
+  .patch(protector, restrictTo('lead-guide', 'admin'), updatedTour)
   .delete(protector, restrictTo('lead-guide', 'admin'), deletedTour);
 
 module.exports = tourRouter;
