@@ -19,10 +19,15 @@ const { protector, restrictTo } = require('../../controllers/authController');
 tourRouter.use('/:tourId/reviews', reviewRouter);
 tourRouter.route('/tour-stats').get(getTourStats);
 tourRouter.route('/top-5-cheap').get(topAliasTours, getAllTours);
-tourRouter.route('/').get(getAllTours).post(createdTour);
+
+tourRouter
+  .route('/')
+  .get(getAllTours)
+  .post(protector, restrictTo('lead-guide', 'admin'), createdTour);
+
 tourRouter
   .route('/monthly-plan/:year')
-  .get(protector, restrictTo('user'), getMonthlyPlan);
+  .get(protector, restrictTo('admin', 'lead-guide', 'guide'), getMonthlyPlan);
 
 tourRouter
   .route('/:id')

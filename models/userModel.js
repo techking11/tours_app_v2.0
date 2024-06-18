@@ -8,9 +8,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please tell us your name'],
     validate: {
-      validator: function (v) {
-        return /^[A-Za-z\s]+$/.test(v);
-      },
+      validator: (v) => /^[A-Za-z\s]+$/.test(v),
       message: 'The user name only contains letters or space.',
     },
   },

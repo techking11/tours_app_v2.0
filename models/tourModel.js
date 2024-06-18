@@ -13,9 +13,7 @@ const tourSchema = new mongoose.Schema(
       minLength: [10, 'The tour name must be more than 10 letters'],
       maxLength: [50, 'The tour name must be less than 50 letters'],
       validate: {
-        validator: function (v) {
-          return /^[A-Za-z\s]+$/.test(v);
-        },
+        validator: (v) => /^[A-Za-z\s]+$/.test(v),
         message: 'The tour name only contains letters and space.',
       },
     },
@@ -41,6 +39,7 @@ const tourSchema = new mongoose.Schema(
       default: 4.5,
       min: [1, 'The ratingsAverage is greater or equal than 1'],
       max: [5, 'The ratingsAverage is less or equal than 5'],
+      set: (val) => Math.round(val * 10) / 10, // 4.666 -> 4.7
     },
     ratingsQuantity: {
       type: Number,
