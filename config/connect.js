@@ -9,6 +9,7 @@ const dbConnection = () => {
       useNewUrlParser: true,
       useCreateIndex: true,
       useFindAndModify: false,
+      useUnifiedTopology: true,
     })
     .then(() => info('DB connection successful'));
 };
