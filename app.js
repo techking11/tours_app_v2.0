@@ -22,7 +22,32 @@ app.set('views', path.join(__dirname, 'views'));
 
 // GLOBAL MIDDLEWARE
 // Security HTTP headers
-app.use(helmet());
+// app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        // ... other directives
+        'script-src': [
+          "'self'", // allow scripts from your own domain
+          "'unsafe-inline'", // allow inline scripts (you may want to remove this depending on your needs)
+          'https://api.mapbox.com', // allow scripts from the Mapbox CDN
+        ],
+        'worker-src': [
+          "'self'", // allow web workers from your own domain
+          'http://localhost:3000', // allow web workers from the current host (development environment)
+          'https://api.mapbox.com', // allow web workers from the Mapbox CDN
+          'blob:', // allow web workers from blob URLs
+        ],
+        'connect-src': [
+          "'self'", // allow connections to your own domain
+          'https://api.mapbox.com', // allow connections to the Mapbox API
+          'https://events.mapbox.com', // allow connections to Mapbox events
+        ],
+      },
+    },
+  }),
+);
 
 // development logging
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
