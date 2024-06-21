@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon server",
-    "start:prod": "NODE_ENV=production nodemon server"
+    "start:prod": "NODE_ENV=production nodemon server",
+    "debug": "ndb server.js"
   },
   "author": "Justin Myo",
   "license": "MIT",

@@ -27,22 +27,24 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        // ... other directives
         'script-src': [
           "'self'", // allow scripts from your own domain
-          "'unsafe-inline'", // allow inline scripts (you may want to remove this depending on your needs)
+          "'unsafe-inline'", // allow inline scripts
           'https://api.mapbox.com', // allow scripts from the Mapbox CDN
+          'https://unpkg.com', // allow scripts from the unpkg CDN
         ],
         'worker-src': [
           "'self'", // allow web workers from your own domain
-          'http://localhost:3000', // allow web workers from the current host (development environment)
+          'http://localhost:3000', // allow web workers from the current host
           'https://api.mapbox.com', // allow web workers from the Mapbox CDN
+          'https://unpkg.com', // allow web workers from the unpkg CDN
           'blob:', // allow web workers from blob URLs
         ],
         'connect-src': [
           "'self'", // allow connections to your own domain
           'https://api.mapbox.com', // allow connections to the Mapbox API
           'https://events.mapbox.com', // allow connections to Mapbox events
+          'https://unpkg.com', // alllow connections to unpkg events
         ],
       },
     },
