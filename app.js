@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const tourRouter = require('./routes/api/tourRouter');
 const userRouter = require('./routes/api/userRouter');
@@ -28,23 +29,26 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         'script-src': [
-          "'self'", // allow scripts from your own domain
-          "'unsafe-inline'", // allow inline scripts
-          'https://api.mapbox.com', // allow scripts from the Mapbox CDN
-          'https://unpkg.com', // allow scripts from the unpkg CDN
+          "'self'",
+          "'unsafe-inline'",
+          'https://api.mapbox.com',
+          'ws://localhost:35213/',
+          'https://unpkg.com',
         ],
         'worker-src': [
-          "'self'", // allow web workers from your own domain
-          'http://localhost:3000', // allow web workers from the current host
-          'https://api.mapbox.com', // allow web workers from the Mapbox CDN
-          'https://unpkg.com', // allow web workers from the unpkg CDN
-          'blob:', // allow web workers from blob URLs
+          "'self'",
+          'http://localhost:3000',
+          'https://api.mapbox.com',
+          'ws://localhost:35213/',
+          'https://unpkg.com',
+          'blob:',
         ],
         'connect-src': [
-          "'self'", // allow connections to your own domain
-          'https://api.mapbox.com', // allow connections to the Mapbox API
-          'https://events.mapbox.com', // allow connections to Mapbox events
-          'https://unpkg.com', // alllow connections to unpkg events
+          "'self'",
+          'https://api.mapbox.com',
+          'https://events.mapbox.com',
+          'ws://localhost:35213/',
+          'https://unpkg.com',
         ],
       },
     },
@@ -65,6 +69,7 @@ app.use('/api', limiter);
 
 // reading data from body to req.body
 app.use(bodyParser.json({ limit: '10kb' }));
+app.use(cookieParser());
 
 // sanitize query like email:  { "$gt": "" }
 app.use(mongoSanitize());

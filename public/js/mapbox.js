@@ -1,45 +1,48 @@
 /* eslint-disable */
 
-const locations = JSON.parse(document.getElementById('map').dataset.locations);
-mapboxgl.accessToken =
-  'pk.eyJ1IjoidGVjaGtpbmcxMTMyIiwiYSI6ImNseG4yNjhwcjBkaGkya3NkaTVwNjgzZ2UifQ.JGo5t2ZkK4F0KPtuQsvLQQ';
+const mapboxgl = require('mapbox-gl');
 
-const map = new mapboxgl.Map({
-  container: 'map', // container ID
-  style: 'mapbox://styles/mapbox/streets-v9', // style URL
-  scrollZoom: false,
-});
+exports.displayMap = function (locations) {
+  mapboxgl.accessToken =
+    'pk.eyJ1IjoidGVjaGtpbmcxMTMyIiwiYSI6ImNseG4yNjhwcjBkaGkya3NkaTVwNjgzZ2UifQ.JGo5t2ZkK4F0KPtuQsvLQQ';
 
-const bounds = new mapboxgl.LngLatBounds();
+  const map = new mapboxgl.Map({
+    container: 'map', // container ID
+    style: 'mapbox://styles/mapbox/streets-v9', // style URL
+    scrollZoom: false,
+  });
 
-locations.forEach((loc) => {
-  const el = document.createElement('div');
-  el.className = 'marker';
+  const bounds = new mapboxgl.LngLatBounds();
 
-  // Add Marker
-  new mapboxgl.Marker({
-    element: el,
-    anchor: 'bottom',
-  })
-    .setLngLat(loc.coordinates)
-    .addTo(map);
+  locations.forEach((loc) => {
+    const el = document.createElement('div');
+    el.className = 'marker';
 
-  // Add Popup
-  new mapboxgl.Popup({
-    offset: 30,
-  })
-    .setLngLat(loc.coordinates)
-    .setHTML(`<p>Day ${loc.day} : ${loc.description}</p>`)
-    .addTo(map);
+    // Add Marker
+    new mapboxgl.Marker({
+      element: el,
+      anchor: 'bottom',
+    })
+      .setLngLat(loc.coordinates)
+      .addTo(map);
 
-  bounds.extend(loc.coordinates);
-});
+    // Add Popup
+    new mapboxgl.Popup({
+      offset: 30,
+    })
+      .setLngLat(loc.coordinates)
+      .setHTML(`<p>Day ${loc.day} : ${loc.description}</p>`)
+      .addTo(map);
 
-map.fitBounds(bounds, {
-  padding: {
-    top: 200,
-    bottom: 150,
-    left: 100,
-    right: 100,
-  },
-});
+    bounds.extend(loc.coordinates);
+  });
+
+  map.fitBounds(bounds, {
+    padding: {
+      top: 200,
+      bottom: 150,
+      left: 100,
+      right: 100,
+    },
+  });
+};

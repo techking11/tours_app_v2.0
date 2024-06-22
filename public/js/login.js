@@ -1,21 +1,22 @@
 /* eslint-disable */
 
-const login = async function (email, password) {
+const { showAlert } = require('./alert');
+
+exports.loginForm = async function (email, password) {
   try {
-    const res = await axios.post('/api/v1/users/login', {
-      email,
-      password,
+    const res = await axios({
+      method: 'post',
+      url: '/api/v1/users/login',
+      data: { email, password }
     });
-    console.log(res);
+    
+    if (res.data.status === 'success') {
+      showAlert('Login Successfully !', 'success', 5000);
+      window.setTimeout(() => {
+        location.assign('/');
+      }, 2000);
+    }
   } catch (err) {
-    console.log(err.message);
+    showAlert(err.response.data.message, 'danger', 5000);
   }
 };
-
-document.querySelector('.form').addEventListener('submit', async function (event) {
-  event.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  
-  await login(email, password);
-});
