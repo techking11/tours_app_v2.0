@@ -4,19 +4,23 @@ require('@babel/polyfill');
 const { displayMap } = require('./mapbox');
 const { loginForm } = require('./login.js');
 const { logout } = require('./logout.js');
+const { updatedSetting } = require('./updateSetting.js');
 
 const mapbox = document.getElementById('map');
 const formHTML = document.querySelector('.form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
+const userDataForm = document.querySelector('.form-user-data');
 
+// MapBox
 if (mapbox) {
   const locations = JSON.parse(mapbox.dataset.locations);
   displayMap(locations);
 }
 
+// Login Form
 if (formHTML) {
-  formHTML.addEventListener('submit', async function (event) {
-    event.preventDefault();
+  formHTML.addEventListener('submit', async function (e) {
+    e.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
@@ -24,4 +28,27 @@ if (formHTML) {
   });
 }
 
+// Logout User
 if (logoutBtn) logoutBtn.addEventListener('click', () => logout());
+
+// A) Update User Settings
+async function getUserData() {
+  const res = await axios({
+    method: 'GET',
+    url: '/api/v1/users/me',
+  });
+  return res.data.data;
+};
+
+// B) Update User Data Form
+if (userDataForm) {
+  userDataForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    
+    const user = await getUserData();
+    if ((user.name != name) || (user.email != email))
+      await updatedSetting(name, email);
+  });
+}
