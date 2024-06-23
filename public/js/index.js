@@ -6,7 +6,7 @@ const { loginForm } = require('./login.js');
 const { logout } = require('./logout.js');
 
 const mapbox = document.getElementById('map');
-const formHTML = document.querySelector('.login-form .form');
+const formHTML = document.querySelector('.form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
 
 if (mapbox) {

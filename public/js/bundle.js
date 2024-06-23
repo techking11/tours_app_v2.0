@@ -46878,7 +46878,7 @@ var _require2 = require('./login.js'),
 var _require3 = require('./logout.js'),
   logout = _require3.logout;
 var mapbox = document.getElementById('map');
-var formHTML = document.querySelector('.login-form .form');
+var formHTML = document.querySelector('.form--login');
 var logoutBtn = document.querySelector('.nav__el--logout');
 if (mapbox) {
   var locations = JSON.parse(mapbox.dataset.locations);

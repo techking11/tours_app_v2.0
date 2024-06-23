@@ -39,6 +39,7 @@ app.use('/api', limiter);
 
 // reading data from body to req.body
 app.use(bodyParser.json({ limit: '10kb' }));
+app.use(bodyParser.urlencoded({ extended: false, limit: '10kb' }));
 app.use(cookieParser());
 
 // sanitize query like email:  { "$gt": "" }
