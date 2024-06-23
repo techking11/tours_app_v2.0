@@ -106,32 +106,49 @@ exports.protector = catchAsync(async (req, res, next) => {
   next();
 });
 
-exports.isLoggedIn = catchAsync(async (req, res, next) => {
-  if (req.cookies.jwt) {
-    // Verfification token
-    const decode = await promisify(jwt.verify)(
-      req.cookies.jwt,
-      process.env.JWT_SECRET,
-    );
+exports.isLoggedIn = async (req, res, next) => {
+  try {
+    if (req.cookies.jwt) {
+      // Verfification token
+      const decode = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET,
+      );
 
-    // check if user still exists
-    const freshUser = await User.findById(decode.id);
-    if (!freshUser) {
+      // check if user still exists
+      const freshUser = await User.findById(decode.id);
+      if (!freshUser) {
+        return next();
+      }
+
+      // // check if the user changed password after the token was issued
+      if (freshUser.changedPasswordAfter(decode.iat)) {
+        return next();
+      }
+
+      // GRANT ACCESS TO PROTECTED ROUTE
+      res.locals.user = freshUser;
+
       return next();
     }
-
-    // // check if the user changed password after the token was issued
-    if (freshUser.changedPasswordAfter(decode.iat)) {
-      return next();
-    }
-
-    // GRANT ACCESS TO PROTECTED ROUTE
-    res.locals.user = freshUser;
-
+    next();
+  } catch (err) {
     return next();
   }
-  next();
-});
+};
+
+exports.userLogout = (req, res, next) => {
+  const cookieOptions = {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  };
+
+  res.cookie('jwt', 'loggedout', cookieOptions);
+  res.status(200).json({
+    status: 'success',
+    message: 'Logout successfully !',
+  });
+};
 
 exports.restrictTo =
   (...roles) =>

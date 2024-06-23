@@ -21,10 +21,12 @@ const {
   resetPassword,
   updatePassword,
   restrictTo,
+  userLogout,
 } = require('../../controllers/authController');
 
 userRouter.route('/signup').post(userSignUp);
 userRouter.route('/login').post(userLogin);
+userRouter.route('/logout').post(userLogout);
 userRouter.route('/forgot-password').post(forgotPassword);
 userRouter.route('/reset-password/:token').post(resetPassword);
 userRouter.route('/update-password').patch(updatePassword);
