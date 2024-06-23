@@ -29,7 +29,7 @@ userRouter.route('/login').post(userLogin);
 userRouter.route('/logout').post(userLogout);
 userRouter.route('/forgot-password').post(forgotPassword);
 userRouter.route('/reset-password/:token').post(resetPassword);
-userRouter.route('/update-password').patch(updatePassword);
+userRouter.route('/update-password').patch(protector, updatePassword);
 
 userRouter.use(protector);
 userRouter.route('/update-me').patch(updateMe);

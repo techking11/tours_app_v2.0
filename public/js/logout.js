@@ -12,7 +12,8 @@ exports.logout = async function () {
     if (res.data.status === 'success') {
       showAlert('Logout Successfully !', 'success', 5000);
       window.setTimeout(() => {
-        location.reload(true);
+        // location.reload(true);
+        location.assign('/');
       }, 3000);
     }
   } catch (err) {

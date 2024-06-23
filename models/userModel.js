@@ -81,7 +81,7 @@ userSchema.pre('save', function (next) {
 });
 
 userSchema.pre(/^find/, function (next) {
-  this.find({ active: { $ne: false } });
+  this.find({ active: { $ne: false } }).select('+password');
   next();
 });
 

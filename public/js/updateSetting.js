@@ -2,13 +2,14 @@
 
 const { showAlert } = require('./alert');
 
-exports.updatedSetting = async (name, email) => {
+exports.updatedSetting = async (data, type) => {
   try {
-    const res = await axios({
-      method: 'PATCH',
-      url: '/api/v1/users/update-me',
-      data: { name, email },
-    });
+    const url =
+      type === 'password'
+        ? '/api/v1/users/update-password'
+        : '/api/v1/users/update-me';
+
+    const res = await axios({ method: 'PATCH', url, data, });
 
     if (res.data.status === 'success') {
       showAlert('Updated Successfully !', 'success', 5000);
