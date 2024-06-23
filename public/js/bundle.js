@@ -46878,7 +46878,7 @@ var _require2 = require('./login.js'),
 var _require3 = require('./logout.js'),
   logout = _require3.logout;
 var mapbox = document.getElementById('map');
-var formHTML = document.querySelector('.form');
+var formHTML = document.querySelector('.login-form .form');
 var logoutBtn = document.querySelector('.nav__el--logout');
 if (mapbox) {
   var locations = JSON.parse(mapbox.dataset.locations);
@@ -46935,7 +46935,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34001" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39701" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

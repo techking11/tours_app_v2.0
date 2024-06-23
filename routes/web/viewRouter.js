@@ -4,14 +4,15 @@ const {
   getOverview,
   getTourDetails,
   getLoginForm,
+  getUserAccount,
 } = require('../../controllers/viewsController');
-const { isLoggedIn } = require('../../controllers/authController');
+const { isLoggedIn, protector } = require('../../controllers/authController');
 
 const viewRouter = express.Router();
-viewRouter.use('/', isLoggedIn);
 
-viewRouter.route('/').get(getOverview);
-viewRouter.route('/tours/:slug').get(getTourDetails);
-viewRouter.route('/login').get(getLoginForm);
+viewRouter.route('/').get(isLoggedIn, getOverview);
+viewRouter.route('/tours/:slug').get(isLoggedIn, getTourDetails);
+viewRouter.route('/login').get(isLoggedIn, getLoginForm);
+viewRouter.route('/me').get(protector, getUserAccount);
 
 module.exports = viewRouter;
