@@ -55,7 +55,7 @@
 } 
 
 .toast.toast-success .toast-progress { 
-  background-color: #0ae063; 
+  background-color: #008738; 
 } 
 
 .toast.toast-danger { 
@@ -63,7 +63,7 @@
 } 
 
 .toast.toast-danger .toast-progress { 
-  background-color: #ea1f09; 
+  background-color: #a01202; 
 }
 
 @keyframes slideInRight { 

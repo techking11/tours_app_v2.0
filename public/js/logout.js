@@ -11,10 +11,11 @@ exports.logout = async function () {
     
     if (res.data.status === 'success') {
       showAlert('Logout Successfully !', 'success', 5000);
-      location.reload(true);
+      window.setTimeout(() => {
+        location.reload(true);
+      }, 3000);
     }
   } catch (err) {
-    console.log(err);
     showAlert(err.message, 'danger', 5000);
   }
 };

@@ -24,9 +24,4 @@ if (formHTML) {
   });
 }
 
-if (logoutBtn) {
-  logoutBtn.addEventListener('click', function () {
-    console.log('I am a logout button 1 !');
-    logout();
-  });
-}
+if (logoutBtn) logoutBtn.addEventListener('click', () => logout());

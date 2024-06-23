@@ -23,37 +23,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // GLOBAL MIDDLEWARE
 // Security HTTP headers
-// app.use(helmet());
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        'script-src': [
-          "'self'",
-          "'unsafe-inline'",
-          'https://api.mapbox.com',
-          'ws://localhost:41255/',
-          'https://unpkg.com',
-        ],
-        'worker-src': [
-          "'self'",
-          'http://localhost:3000',
-          'https://api.mapbox.com',
-          'ws://localhost:41255/',
-          'https://unpkg.com',
-          'blob:',
-        ],
-        'connect-src': [
-          "'self'",
-          'https://api.mapbox.com',
-          'https://events.mapbox.com',
-          'ws://localhost:41255/',
-          'https://unpkg.com',
-        ],
-      },
-    },
-  }),
-);
+app.use(helmet({ contentSecurityPolicy: false }));
 
 // development logging
 if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
