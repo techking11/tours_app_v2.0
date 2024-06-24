@@ -14,6 +14,8 @@ const {
   getMonthlyPlan,
   getToursWithin,
   getDistances,
+  uploadTourImages,
+  resizeTourImages,
 } = require('../../controllers/toursController');
 
 const { protector, restrictTo } = require('../../controllers/authController');
@@ -44,7 +46,13 @@ tourRouter
 tourRouter
   .route('/:id')
   .get(getTour)
-  .patch(protector, restrictTo('lead-guide', 'admin'), updatedTour)
+  .patch(
+    protector,
+    restrictTo('lead-guide', 'admin'),
+    uploadTourImages,
+    resizeTourImages,
+    updatedTour,
+  )
   .delete(protector, restrictTo('lead-guide', 'admin'), deletedTour);
 
 module.exports = tourRouter;

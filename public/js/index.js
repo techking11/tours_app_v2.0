@@ -51,16 +51,14 @@ if (userDataForm) {
     formData.append('name', document.getElementById('name').value);
     formData.append('email', document.getElementById('email').value);
     formData.append('photo', document.getElementById('photo').files[0]);
-    
-    await updatedSetting(formData, 'data');
-    
-    // const name = document.getElementById('name').value;
-    // const email = document.getElementById('email').value;
-    // const photo = document.getElementById('photo').files[0];
 
-    // const user = await getUserData();
-    // if (user.name != name || user.email != email || user.photo != photo)
-    //   await updatedSetting({ name, email, photo }, 'data');
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const photo = formData.get('photo');
+
+    const user = await getUserData();
+    if (user.name != name || user.email != email || photo != 'undefined')
+      await updatedSetting(formData, 'data');
   });
 }
 
