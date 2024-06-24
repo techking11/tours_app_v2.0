@@ -47,12 +47,20 @@ async function getUserData() {
 if (userDataForm) {
   userDataForm.addEventListener('submit', async function (e) {
     e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
+    const formData = new FormData();
+    formData.append('name', document.getElementById('name').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('photo', document.getElementById('photo').files[0]);
+    
+    await updatedSetting(formData, 'data');
+    
+    // const name = document.getElementById('name').value;
+    // const email = document.getElementById('email').value;
+    // const photo = document.getElementById('photo').files[0];
 
-    const user = await getUserData();
-    if (user.name != name || user.email != email)
-      await updatedSetting({ name, email }, 'data');
+    // const user = await getUserData();
+    // if (user.name != name || user.email != email || user.photo != photo)
+    //   await updatedSetting({ name, email, photo }, 'data');
   });
 }
 

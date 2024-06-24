@@ -38,9 +38,11 @@ block content
               input#email.form__input(type='email', value=`${user.email}`, name='email', required)
             .form__group.form__photo-upload
               img.form__user-photo(src=`/img/users/${user.photo}`, alt=`photo of ${user.name}`)
-              a.btn-text(href='#') Choose new photo
+              
+              input#photo.form__input(type='file', name='photo', accept='image/*' style='display: none;')
+              label.form__label.btn-text(for='photo') Choose new photo
             .form__group.right
-              button.btn.btn--small.btn--green Save settings
+              button.btn.btn--small.btn--green Save settings    
         .line &nbsp;
         .user-view__form-container
           h2.heading-secondary.ma-bt-md Password change

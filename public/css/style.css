@@ -264,7 +264,7 @@ body {
 .btn-small:hover {
   background-color: #7dd56f;
 }
-
+.btn-text,
 .btn-text:link,
 .btn-text:visited {
   color: #55c57a;
