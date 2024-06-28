@@ -7,12 +7,14 @@ const { logout } = require('./logout.js');
 const { updatedSetting } = require('./updateSetting.js');
 const { showAlert } = require('./alert.js');
 const bcrypt = require('bcryptjs');
+const { bookingTour } = require('./stripe.js');
 
 const mapbox = document.getElementById('map');
 const formHTML = document.querySelector('.form--login');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordChange = document.querySelector('.form-user-settings');
+const tourBtn = document.getElementById('book-tour');
 
 // MapBox
 if (mapbox) {
@@ -77,5 +79,13 @@ if (userPasswordChange) {
         'password',
       );
     } else showAlert('Enter your current password again !', 'danger', 5000);
+  });
+}
+
+if (tourBtn) {
+  tourBtn.addEventListener('click', function (e) {
+    const { tourId } = e.target.dataset;
+    e.target.textContent = 'Processing...';
+    bookingTour(tourId);
   });
 }
