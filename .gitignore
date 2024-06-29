@@ -4,7 +4,4 @@ package-lock.json
 
 .env
 
-public/js/bundle.js
-public/js/bundle.js.map
-
 .cache
