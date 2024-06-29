@@ -11,19 +11,19 @@ const {
 
 const { protector, restrictTo } = require('../../controllers/authController');
 
-const reviewRouter = express.Router({ mergeParams: true });
+const router = express.Router({ mergeParams: true });
 
-reviewRouter.use(protector);
+router.use(protector);
 
-reviewRouter
+router
   .route('/')
   .get(getAllReviews)
   .post(restrictTo('admin', 'user'), setTourUsersId, createNewReview);
 
-reviewRouter
+router
   .route('/:id')
   .delete(restrictTo('admin'), deleteReview)
   .patch(restrictTo('admin'), updateReview)
   .get(getReview);
 
-module.exports = reviewRouter;
+module.exports = router;

@@ -1222,6 +1222,33 @@ body {
   margin: 0 auto;
 }
 
+.form__signup input::placeholder {
+  color: #333333;
+  text-transform: uppercase;
+}
+
+.form__signup input {
+  color: #333333;
+}
+
+.singup__group {
+  text-align: center;
+}
+
+.btn__signup {
+  width: 60%;
+  padding: 16px;
+}
+
+.already-account {
+  font-size: 16px;
+  padding-top: 16px;
+}
+
+.already-account > a {
+  font-weight: 600;
+}
+
 .login-form {
   margin: 0 auto;
   max-width: 55rem;

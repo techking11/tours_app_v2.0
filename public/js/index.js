@@ -15,7 +15,7 @@ const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordChange = document.querySelector('.form-user-settings');
 const tourBtn = document.getElementById('book-tour');
-
+const telFlag = document.getElementById('phone');
 // MapBox
 if (mapbox) {
   const locations = JSON.parse(mapbox.dataset.locations);
@@ -88,4 +88,10 @@ if (tourBtn) {
     e.target.textContent = 'Processing...';
     bookingTour(tourId);
   });
+}
+
+if (telFlag) { 
+  window.intlTelInput(telFlag, {});
+  const countryCode = document.querySelector('.iti__dial-code').textContent;
+  telFlag.value = countryCode;
 }

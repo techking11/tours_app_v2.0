@@ -1,6 +1,6 @@
 const express = require('express');
 
-const userRouter = express.Router();
+const router = express.Router();
 
 const {
   getAllUsers,
@@ -26,20 +26,20 @@ const {
   userLogout,
 } = require('../../controllers/authController');
 
-userRouter.route('/signup').post(userSignUp);
-userRouter.route('/login').post(userLogin);
-userRouter.route('/logout').post(userLogout);
-userRouter.route('/forgot-password').post(forgotPassword);
-userRouter.route('/reset-password/:token').post(resetPassword);
-userRouter.route('/update-password').patch(protector, updatePassword);
+router.route('/signup').post(userSignUp);
+router.route('/login').post(userLogin);
+router.route('/logout').post(userLogout);
+router.route('/forgot-password').post(forgotPassword);
+router.route('/reset-password/:token').post(resetPassword);
+router.route('/update-password').patch(protector, updatePassword);
 
-userRouter.use(protector);
-userRouter.route('/update-me').patch(uploadUserPhoto, resizeUserImg, updateMe);
-userRouter.route('/delete-me').delete(deleteMe);
-userRouter.route('/me').get(getMe, getUser);
+router.use(protector);
+router.route('/update-me').patch(uploadUserPhoto, resizeUserImg, updateMe);
+router.route('/delete-me').delete(deleteMe);
+router.route('/me').get(getMe, getUser);
 
-userRouter.use(restrictTo('admin', 'lead-guide'));
-userRouter.route('/').get(getAllUsers).post(createdUser);
-userRouter.route('/:id').get(getUser).patch(updatedUser).delete(deletedUser);
+router.use(restrictTo('admin', 'lead-guide'));
+router.route('/').get(getAllUsers).post(createdUser);
+router.route('/:id').get(getUser).patch(updatedUser).delete(deletedUser);
 
-module.exports = userRouter;
+module.exports = router;

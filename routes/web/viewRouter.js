@@ -5,14 +5,17 @@ const {
   getTourDetails,
   getLoginForm,
   getUserAccount,
+  getSignupForm,
 } = require('../../controllers/viewsController');
 const { isLoggedIn, protector } = require('../../controllers/authController');
 
-const viewRouter = express.Router();
+const router = express.Router();
 
-viewRouter.route('/').get(isLoggedIn, getOverview);
-viewRouter.route('/tours/:slug').get(isLoggedIn, getTourDetails);
-viewRouter.route('/login').get(isLoggedIn, getLoginForm);
-viewRouter.route('/me').get(protector, getUserAccount);
+router.route('/').get(isLoggedIn, getOverview);
+router.route('/tours/:slug').get(isLoggedIn, getTourDetails);
 
-module.exports = viewRouter;
+router.route('/login').get(getLoginForm);
+router.route('/signup').get(getSignupForm);
+router.route('/me').get(protector, getUserAccount);
+
+module.exports = router;
