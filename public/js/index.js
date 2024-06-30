@@ -8,6 +8,7 @@ const { updatedSetting } = require('./updateSetting.js');
 const { showAlert } = require('./alert.js');
 const bcrypt = require('bcryptjs');
 const { bookingTour } = require('./stripe.js');
+const { signupForm } = require('./signup.js');
 
 const mapbox = document.getElementById('map');
 const formHTML = document.querySelector('.form--login');
@@ -16,6 +17,15 @@ const userDataForm = document.querySelector('.form-user-data');
 const userPasswordChange = document.querySelector('.form-user-settings');
 const tourBtn = document.getElementById('book-tour');
 const telFlag = document.getElementById('phone');
+const formSignup = document.querySelector('.form__signup');
+
+// flag and phone input show
+if (telFlag) {
+  window.intlTelInput(telFlag, {});
+  const countryCode = document.querySelector('.iti__dial-code').textContent;
+  telFlag.value = countryCode;
+}
+
 // MapBox
 if (mapbox) {
   const locations = JSON.parse(mapbox.dataset.locations);
@@ -30,6 +40,20 @@ if (formHTML) {
     const password = document.getElementById('password').value;
 
     await loginForm(email, password);
+  });
+}
+
+// Signup Form
+if (formSignup) {
+  formSignup.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('passwordConfirm').value;
+
+    await signupForm(name, email, phone, password, passwordConfirm);
   });
 }
 
@@ -88,10 +112,4 @@ if (tourBtn) {
     e.target.textContent = 'Processing...';
     bookingTour(tourId);
   });
-}
-
-if (telFlag) { 
-  window.intlTelInput(telFlag, {});
-  const countryCode = document.querySelector('.iti__dial-code').textContent;
-  telFlag.value = countryCode;
 }

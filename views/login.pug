@@ -11,5 +11,8 @@ block content
         .form__group.ma-bt-md
           label.form__label(for='password') Password
           input#password.form__input(type='password', placeholder='••••••••', required, minlength='8')
-        .form__group
-          button.btn.btn--green Login
+          a.btn-text(href='/signup' style='float: right; font-size: 16px; margin: 7px 0 17px 0;') Forgot password ?
+        .form__group.singup__group(style='clear: both;')
+          button.btn.btn--green.btn__signup Login
+          p.already-account Haven't an account yet ? &nbsp;
+            a.btn-text(href='/signup') Sign Up

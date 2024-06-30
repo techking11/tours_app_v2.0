@@ -19,6 +19,15 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, 'Please provide a valid email address'],
   },
+  phone: {
+    type: String,
+    unique: true,
+    required: [true, 'Please provide your email'],
+    validate: {
+      validator: (phno) => /^\+\d+$/.test(phno),
+      message: (props) => `${props.value} is not a valid phone number!`,
+    },
+  },
   photo: {
     type: String,
     default: 'default.jpg',
