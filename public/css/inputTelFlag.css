@@ -80,7 +80,7 @@
 }
 .iti__flag-box {
   display: inline-block;
-  width: 20px;;
+  width: 20px;
 }
 .iti__divider {
   padding-bottom: 0;
@@ -174,28 +174,6 @@
   padding: 10px 10px;
   line-height: 1.5em;
 }
-
-.iti__flag {
-  width: 20px;
-}
-.iti__flag.iti__be {
-  width: 18px;
-}
-.iti__flag.iti__ch {
-  width: 15px;
-}
-.iti__flag.iti__mc {
-  width: 19px;
-}
-.iti__flag.iti__ne {
-  width: 18px;
-}
-.iti__flag.iti__np {
-  width: 13px;
-}
-.iti__flag.iti__va {
-  width: 15px;
-}
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .iti__flag {
     background-size: 5652px 15px;
@@ -282,6 +260,7 @@
   background-position: -418px 0px;
 }
 .iti__flag.iti__be {
+  width: 18px;
   height: 15px;
   background-position: -440px 0px;
 }
@@ -374,6 +353,7 @@
   background-position: -922px 0px;
 }
 .iti__flag.iti__ch {
+  width: 15px;
   height: 15px;
   background-position: -944px 0px;
 }
@@ -774,6 +754,7 @@
   background-position: -3117px 0px;
 }
 .iti__flag.iti__mc {
+  width: 19px;
   height: 15px;
   background-position: -3139px 0px;
 }
@@ -870,6 +851,7 @@
   background-position: -3644px 0px;
 }
 .iti__flag.iti__ne {
+  width: 18px;
   height: 15px;
   background-position: -3666px 0px;
 }
@@ -894,8 +876,10 @@
   background-position: -3774px 0px;
 }
 .iti__flag.iti__np {
+  width: 13px;
   height: 15px;
   background-position: -3796px 0px;
+  background-color: transparent;
 }
 .iti__flag.iti__nr {
   height: 10px;
@@ -1174,6 +1158,7 @@
   background-position: -5307px 0px;
 }
 .iti__flag.iti__va {
+  width: 15px;
   height: 15px;
   background-position: -5329px 0px;
 }
@@ -1235,6 +1220,7 @@
 }
 
 .iti__flag {
+  width: 20px;
   height: 15px;
   box-shadow: 0px 0px 1px 0px #888;
   background-image: url('../img/flags.png');
@@ -1246,8 +1232,4 @@
   .iti__flag {
     background-image: url('../img/flags@2x.png');
   }
-}
-
-.iti__flag.iti__np {
-  background-color: transparent;
 }
